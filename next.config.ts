@@ -1,0 +1,25 @@
+import type {NextConfig} from 'next';
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+  // Exclude icon.svg and other metadata files from being treated as pages
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+};
+
+export default nextConfig;

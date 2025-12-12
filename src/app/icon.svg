@@ -1,0 +1,27 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black background -->
+  <rect width="32" height="32" fill="#000000"/>
+  
+  <!-- White circle with orange border -->
+  <circle cx="16" cy="16" r="13" fill="#FFFFFF" stroke="#FF6B35" stroke-width="2.5"/>
+  
+  <!-- Combined G and 1 symbol - simplified for small size -->
+  <!-- G shape (orange) - curved part -->
+  <path d="M 10 12 Q 10 10 12 10 L 14 10 Q 16 10 16 12 L 16 14 Q 16 16 14 16" stroke="#FF6B35" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 14 16 L 16 16" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- 1 shape (brown) - vertical line -->
+  <path d="M 18 9 L 18 19" stroke="#8B4513" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Two white dots within the symbol -->
+  <circle cx="13" cy="13" r="1.2" fill="#FFFFFF"/>
+  <circle cx="15" cy="15" r="1.2" fill="#FFFFFF"/>
+  
+  <!-- Brown droplet below -->
+  <path d="M 16 20 Q 14.5 21.5 16 23 Q 17.5 21.5 16 20 Z" fill="#8B4513"/>
+  
+  <!-- Two wavy orange lines beneath droplet -->
+  <path d="M 10 25.5 Q 12 24.5 14 25.5 T 18 25.5" stroke="#FF6B35" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M 10 27.5 Q 12 26.5 14 27.5 T 18 27.5" stroke="#FF6B35" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+</svg>
+

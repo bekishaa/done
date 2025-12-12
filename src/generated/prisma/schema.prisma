@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  name                String    @unique
+  email               String    @unique
+  password            String?
+  role                Role
+  branchId            String
+  ticketNumberStart   Int?
+  ticketNumberEnd     Int?
+  currentTicketNumber Int?
+  isActive            Boolean   @default(true)
+  failedLoginAttempts Int       @default(0)
+  isLocked            Boolean   @default(false)
+  lockedAt            DateTime?
+
+  tickets   Ticket[]   @relation("UserTickets")
+  customers Customer[] @relation("RegisteredByUser")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Customer {
+  id                   String   @id @default(cuid())
+  fullName             String
+  sex                  Sex
+  phoneNumber          String   @unique
+  address              String?
+  payersIdentification String   @unique
+  savingType           String
+  loanType             String
+  registrationDate     String
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  registeredBy         String
+
+  registeredByUser User?             @relation("RegisteredByUser", fields: [registeredBy], references: [name])
+  tickets          Ticket[]
+  history          CustomerHistory[]
+}
+
+model Ticket {
+  id               String       @id @default(cuid())
+  customerName     String
+  customerPhone    String?
+  paymentAmount    Float
+  status           TicketStatus
+  date             String
+  reasonForPayment String?
+  preparedBy       String
+  ticketNumber     String
+  modeOfPayment    PaymentMode?
+  bankReceiptNo    String?
+  htmlContent      String? // Store the generated HTML for PDF viewing
+  createdAt        DateTime     @default(now())
+
+  // Audit fields
+  auditStatus AuditStatus @default(Pending)
+  auditedBy   String?
+  auditedAt   DateTime?
+  auditNote   String?
+
+  preparedByUser User?     @relation("UserTickets", fields: [preparedBy], references: [name])
+  customer       Customer? @relation(fields: [customerPhone], references: [phoneNumber])
+}
+
+model CustomerHistory {
+  id               String           @id @default(cuid())
+  eventType        HistoryEventType
+  amount           Float
+  ticketNumber     String
+  date             String
+  preparedBy       String
+  reasonForPayment String?
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  superadmin
+  admin
+  sales
+  auditor
+  operation
+}
+
+enum Sex {
+  Male
+  Female
+}
+
+enum TicketStatus {
+  Sent
+  Failed
+}
+
+enum HistoryEventType {
+  ticket
+}
+
+enum AuditStatus {
+  Pending
+  Approved
+  Rejected
+  Voided
+}
+
+enum PaymentMode {
+  CASH
+  BANK
+}

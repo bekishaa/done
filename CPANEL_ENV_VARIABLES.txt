@@ -1,0 +1,17 @@
+# cPanel Environment Variables Configuration
+# Copy these values to your cPanel → Application Manager → Environment Variables
+
+DATABASE_URL=mysql://appsgiho_user:%23Gihon_60908@localhost:3306/appsgiho_re
+
+NEXT_PUBLIC_APP_URL=https://fa.apps-gihonsaccos.com
+
+# Optional: SMS Configuration (if you have AfroMessage setup)
+# AFRO_API_KEY=your_api_key_here
+# AFRO_IDENTIFIER_ID=your_identifier_id_here
+# AFRO_SENDER_NAME=GihonSaccos
+
+
+
+
+
+
