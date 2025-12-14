@@ -13,7 +13,7 @@ const envLocalPath = path.join(process.cwd(), '.env.local');
 if (!existsSync(envPath) && !existsSync(envLocalPath)) {
   console.log('📝 Creating environment file...');
   const envContent = `# Database
-#DATABASE_URL="mysql://username:password@localhost:3306/receiptrocket"
+DATABASE_URL="mysql://username:password@localhost:3306/receiptrocket"
 DATABASE_URL="mysql://appsgiho_go_user:Gihon_60908@localhost/appsgiho_go?socketPath=/var/lib/mysql/mysql.sock"
 # Next.js
 NEXTAUTH_SECRET="your-secret-key-here-$(openssl rand -base64 32)"

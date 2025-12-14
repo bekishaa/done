@@ -1,9 +1,16 @@
 # cPanel Environment Variables Configuration
 # Copy these values to your cPanel → Application Manager → Environment Variables
+# IMPORTANT: After setting/changing these, RESTART your Node.js application!
 
 DATABASE_URL=mysql://appsgiho_user:%23Gihon_60908@localhost:3306/appsgiho_re
 
-NEXT_PUBLIC_APP_URL=https://fa.apps-gihonsaccos.com
+# Update this to match your actual domain
+NEXT_PUBLIC_APP_URL=https://be.apps-gihonsaccos.com
+NEXT_PUBLIC_BASE_URL=https://be.apps-gihonsaccos.com
+NEXTAUTH_URL=https://be.apps-gihonsaccos.com
+
+# Set to production
+NODE_ENV=production
 
 # Optional: SMS Configuration (if you have AfroMessage setup)
 # AFRO_API_KEY=your_api_key_here

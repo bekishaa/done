@@ -1018,12 +1018,23 @@ export async function loginAction(email: string, password: string): Promise<{ su
       console.error('[Login] Error type:', dbError instanceof Error ? dbError.constructor.name : typeof dbError);
       console.error('[Login] Error message:', dbError instanceof Error ? dbError.message : String(dbError));
       console.error('[Login] Error stack:', dbError instanceof Error ? dbError.stack : 'No stack trace');
+      console.error('[Login] DATABASE_URL:', process.env.DATABASE_URL ? 'Set' : 'NOT SET');
       
       // Check if it's a connection error
-      if (dbError instanceof Error && (dbError.message.includes('connect') || dbError.message.includes('ENOENT') || dbError.message.includes('database') || dbError.message.includes('SQLITE'))) {
+      const errorMessage = dbError instanceof Error ? dbError.message : String(dbError);
+      if (dbError instanceof Error && (
+        errorMessage.includes('connect') || 
+        errorMessage.includes('ENOENT') || 
+        errorMessage.includes('database') || 
+        errorMessage.includes('SQLITE') ||
+        errorMessage.includes('Access denied') ||
+        errorMessage.includes('ER_ACCESS_DENIED') ||
+        errorMessage.includes('ECONNREFUSED')
+      )) {
+        // In production, still show a helpful message for connection errors
         return { 
           success: false, 
-          error: 'Database connection error. Please contact your administrator.' 
+          error: 'Database connection error. Please check server logs and verify DATABASE_URL is set correctly in cPanel environment variables.' 
         };
       }
       // Re-throw if it's not a connection error
@@ -1168,11 +1179,26 @@ export async function loginAction(email: string, password: string): Promise<{ su
     
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
-    // Don't expose internal error details in production
+    // Check for specific database connection errors even in production
+    if (errorMessage.includes('Access denied') || errorMessage.includes('ER_ACCESS_DENIED')) {
+      return {
+        success: false,
+        error: 'Database authentication failed. Please verify DATABASE_URL credentials in cPanel environment variables.'
+      };
+    }
+    
+    if (errorMessage.includes('ECONNREFUSED') || errorMessage.includes('connect')) {
+      return {
+        success: false,
+        error: 'Cannot connect to database. Please verify MySQL is running and DATABASE_URL is correct in cPanel.'
+      };
+    }
+    
+    // Don't expose internal error details in production for other errors
     if (process.env.NODE_ENV === 'production') {
       return { 
         success: false, 
-        error: 'An error occurred during login. Please try again or contact your administrator.' 
+        error: 'An error occurred during login. Please check cPanel application logs for details or contact your administrator.' 
       };
     } else {
       // In development, show more details
